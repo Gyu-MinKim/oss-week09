@@ -6,7 +6,7 @@
 // 실행: 터미널에서 node check.js
 // 확인: 출력이 주석의 예상과 전부 같습니다.
 // 커밋 메시지: p6: check (P7 에서 늘린 것은 p7: reasons 에 같이)
-import { toDays, isGoodDay, summarize } from "./logic.js";
+import { toDays, isGoodDay, summarize, reasons } from "./logic.js";
 
 // test input, written by hand
 const daily = { 
@@ -26,3 +26,7 @@ for(let i=0;i<4;i++)
 console.log(summarize(days, { rain: 27, wind: 9 })); //good for a run on 1 of 4 days
 
 console.log(summarize([], { rain: 30,wind: 10 })); //good for a run on 0 of 0 days
+
+console.log(reasons(days[0], { rain: 30, wind: 10 })); // [ 'wind' ]
+console.log(reasons(days[1], { rain: 0, wind: 0 })); // [ 'rain', 'wind' ]
+console.log(reasons(days[2], { rain: 100, wind: 100 })); // []

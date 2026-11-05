@@ -21,11 +21,21 @@ export function toDays(daily)
 
 export function isGoodDay(day, limits)
 {
-    return (day.rain <= limits.rain && day.wind <= limits.wind);
+    return reasons(day, limits).length === 0;
 }
 
 export function summarize(days, limits)
 {
     const isGood = days.filter((day) => isGoodDay(day, limits));
     return `good for a run on ${isGood.length} of ${days.length} days`
+}
+
+export function reasons(day, limits)
+{
+    let reason = [];
+    if(day.rain > limits.rain) //check rain
+        reason.push("rain");
+    if(day.wind > limits.wind) //check wind
+        reason.push("wind");
+    return reason;
 }

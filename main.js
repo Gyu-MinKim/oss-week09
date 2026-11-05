@@ -21,7 +21,7 @@ const CITIES = {
 
 
 import { getForecast } from "./api.js"; //P2: 예보 받기
-import { isGoodDay, toDays, summarize } from "./logic.js"; //P3: 표 그리기
+import { isGoodDay, toDays, summarize, reasons } from "./logic.js"; //P3: 표 그리기
 
 
 //변수들
@@ -61,14 +61,17 @@ form.addEventListener("submit", async (event) =>{
 
 function dayRow(day) {
   const tr = document.createElement("tr");
+  const whyNot = reasons(day, state.limits);
   for (const text of [
     day.date.slice(5),
     `${day.max}°`,
     `${day.wind}km/h`,
-    `${day.rain}%`]) {
-      const td = document.createElement("td");
-      td.textContent = text;
-      tr.append(td);
+    `${day.rain}%`,
+    whyNot.join(", ")
+  ]) {
+    const td = document.createElement("td");
+    td.textContent = text;
+    tr.append(td);
   }
   if (isGoodDay(day, state.limits)) 
     tr.classList.add("good");
