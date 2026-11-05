@@ -80,3 +80,15 @@ function render() {
   summaryEl.textContent = state.city 
   ? `${state.city.name}: ${summarize(state.days, state.limits)}` : "";
 }
+
+//P5: rule
+function updateLimits() {
+  state.limits = {
+    rain: Number(rainInput.value),
+    wind: Number(windInput.value)
+  };
+  render();
+}
+
+rainInput.addEventListener("input", updateLimits);
+windInput.addEventListener("input", updateLimits);
