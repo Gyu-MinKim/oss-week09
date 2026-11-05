@@ -18,6 +18,11 @@ const CITIES = {
 };
 
 // P1 부터 여기 아래에 씁니다.
+
+//P2: 예보 받기
+import { getForecast } from "./api.js";
+
+//변수들
 const form = document.querySelector("#run-form");
 const citySelect = document.querySelector("#city");
 const rainInput = document.querySelector("#rain-limit");
@@ -26,9 +31,22 @@ const statusEl = document.querySelector("#status");
 const summaryEl = document.querySelector("#summary");
 const rows = document.querySelector("#rowsEl");
 
-form.addEventListener("submit", (event) =>{
+//P1: Check에 반응하기
+form.addEventListener("submit", async (event) =>{
   event.preventDefault(); //stay on this page
   const city = CITIES[citySelect.value];
   statusEl.textContent = `Loading...`;
-  console.log(city);
+  statusEl.classList.remove("error");
+  try{
+    const daily = await getForecast(city);
+    statusEl.textContent = "";
+    console.log(daily);
+  }
+  catch (err) {
+    statusEl.textContent = 
+      `Could not load the forecast (${err.message})`;
+    statusEl.classList.add("error");
+  }
 });
+
+
