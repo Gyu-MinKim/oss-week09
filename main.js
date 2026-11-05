@@ -21,7 +21,7 @@ const CITIES = {
 
 
 import { getForecast } from "./api.js"; //P2: 예보 받기
-import { toDays } from "./logic.js"; //P3: 표 그리기
+import { isGoodDay, toDays, summarize } from "./logic.js"; //P3: 표 그리기
 
 
 //변수들
@@ -33,7 +33,10 @@ const statusEl = document.querySelector("#status");
 const summaryEl = document.querySelector("#summary");
 const rows = document.querySelector("#rows");
 
-const state = { city: null, days: []};
+const state = { city: null, days: [], 
+  limits: {
+    rain: Number(rainInput.value), wind: Number(windInput.value)
+}};
 
 //P1: Check에 반응하기
 form.addEventListener("submit", async (event) =>{
@@ -41,6 +44,7 @@ form.addEventListener("submit", async (event) =>{
   const city = CITIES[citySelect.value];
   statusEl.textContent = `Loading...`;
   statusEl.classList.remove("error");
+  summaryEl.textContent = "";
   try{
     const daily = await getForecast(city);
     state.city = city;
@@ -66,10 +70,13 @@ function dayRow(day) {
       td.textContent = text;
       tr.append(td);
   }
-//if (day.rain >= state.threshold) tr.classList.add("wet");
+  if (isGoodDay(day, state.limits)) 
+    tr.classList.add("good");
   return tr;
 }
 
 function render() {
   rows.replaceChildren(...state.days.map(dayRow));
+  summaryEl.textContent = state.city 
+  ? `${state.city.name}: ${summarize(state.days, state.limits)}` : "";
 }

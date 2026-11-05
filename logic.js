@@ -18,3 +18,14 @@ export function toDays(daily)
         rain: daily.precipitation_probability_max[i],
     }));
 }
+
+export function isGoodDay(day, limits)
+{
+    return (day.rain <= limits.rain && day.wind <= limits.wind);
+}
+
+export function summarize(days, limits)
+{
+    const isGood = days.filter((day) => isGoodDay(day, limits));
+    return `good for a run on ${isGood.length} of ${days.length} days`
+}
