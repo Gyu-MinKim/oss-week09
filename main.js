@@ -19,8 +19,10 @@ const CITIES = {
 
 // P1 부터 여기 아래에 씁니다.
 
-//P2: 예보 받기
-import { getForecast } from "./api.js";
+
+import { getForecast } from "./api.js"; //P2: 예보 받기
+import { toDays } from "./logic.js"; //P3: 표 그리기
+
 
 //변수들
 const form = document.querySelector("#run-form");
@@ -29,7 +31,9 @@ const rainInput = document.querySelector("#rain-limit");
 const windInput = document.querySelector("#wind-limit");
 const statusEl = document.querySelector("#status");
 const summaryEl = document.querySelector("#summary");
-const rows = document.querySelector("#rowsEl");
+const rows = document.querySelector("#rows");
+
+const state = { city: null, days: []};
 
 //P1: Check에 반응하기
 form.addEventListener("submit", async (event) =>{
@@ -39,14 +43,33 @@ form.addEventListener("submit", async (event) =>{
   statusEl.classList.remove("error");
   try{
     const daily = await getForecast(city);
+    state.city = city;
+    state.days = toDays(daily);
     statusEl.textContent = "";
-    console.log(daily);
   }
   catch (err) {
     statusEl.textContent = 
       `Could not load the forecast (${err.message})`;
     statusEl.classList.add("error");
   }
+  render(); //draw the page
 });
 
+function dayRow(day) {
+  const tr = document.createElement("tr");
+  for (const text of [
+    day.date.slice(5),
+    `${day.max}°`,
+    `${day.wind}km/h`,
+    `${day.rain}%`]) {
+      const td = document.createElement("td");
+      td.textContent = text;
+      tr.append(td);
+  }
+//if (day.rain >= state.threshold) tr.classList.add("wet");
+  return tr;
+}
 
+function render() {
+  rows.replaceChildren(...state.days.map(dayRow));
+}
