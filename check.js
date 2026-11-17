@@ -21,11 +21,11 @@ const days = toDays(daily);
 console.log(days[0]); //{ date: '01-05', max: -10.2, wind: 78, rain: 27.5 }
 
 for(let i=0;i<4;i++)
-    console.log(isGoodDay(days[i], { rain: 27, wind: 9 })); //false false false true
+    console.log(isGoodDay(days[i], { rain: 30, wind: 10 })); //false true false true
 
-console.log(summarize(days, { rain: 27, wind: 9 })); //good for a run on 1 of 4 days
+console.log(summarize(days, { rain: 30, wind: 10 })); //good for a run on 2 of 4 days
 
-console.log(summarize([], { rain: 30,wind: 10 })); //good for a run on 0 of 0 days
+console.log(summarize([], { rain: 30, wind: 10 })); //good for a run on 0 of 0 days
 
 console.log(reasons(days[0], { rain: 30, wind: 10 })); // [ 'wind' ]
 console.log(reasons(days[1], { rain: 0, wind: 0 })); // [ 'rain', 'wind' ]

@@ -53,7 +53,7 @@ form.addEventListener("submit", async (event) =>{
   }
   catch (err) {
     statusEl.textContent = 
-      `Could not load the forecast (${err.message})`;
+      `Could not load the forecast (${err.message}).`;
     statusEl.classList.add("error");
   }
   render(); //draw the page
@@ -65,7 +65,7 @@ function dayRow(day) {
   for (const text of [
     day.date.slice(5),
     `${day.max}°`,
-    `${day.wind}km/h`,
+    `${day.wind} km/h`,
     `${day.rain}%`,
     whyNot.join(", ")
   ]) {
